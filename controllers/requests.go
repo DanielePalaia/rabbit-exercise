@@ -29,7 +29,10 @@ func HandlePublish(w http.ResponseWriter, r *http.Request) {
 	}
 	message := messages[0]
 
-	rabbitmq.Client.DeclareAndPublishToExchange(exchange, message)
+	err := rabbitmq.Client.DeclareAndPublishToExchange(exchange, message)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 
 	// Reply back to the client request
 	w.WriteHeader(http.StatusOK)
@@ -49,9 +52,11 @@ func HandleConsume(w http.ResponseWriter, r *http.Request) {
 	}
 	queue := queues[0]
 
-	msg := rabbitmq.Client.DeclareAndConsumeFromQueue(queue)
+	msg,err := rabbitmq.Client.DeclareAndConsumeFromQueue(queue)
 
-	log.Println("message is : ", msg)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 
 	EncodeToJsonWithBody(w, msg)
 

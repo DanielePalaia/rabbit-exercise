@@ -22,26 +22,33 @@ func MakeRabbitClient(connString string) *rabbitClient {
 	return client
 }
 
-func (client *rabbitClient) failOnError(err error, msg string) {
+func (client *rabbitClient) failOnErrorFatal(err error, msg string) {
 	if err != nil {
 		log.Fatalf("%s: %s", msg, err)
+		client.ch.Close()
 	}
+}
+
+func (client *rabbitClient) failOnErrorNonFatal(err error, msg string) error {
+	if err != nil {
+		log.Printf("%s: %s", msg, err)
+		client.ch.Close()
+	}
+	return err
 }
 
 func (client *rabbitClient) Connect() {
 
 	conn, err := amqp.Dial(client.connString)
-	client.failOnError(err, "Failed to connect to RabbitMQ")
-	//defer conn.Close()
+	client.failOnErrorFatal(err, "Failed to connect to RabbitMQ")
 
 	ch, err := conn.Channel()
-	client.failOnError(err, "Failed to open a channel")
+	client.failOnErrorFatal(err, "Failed to open a channel")
 	client.ch = ch
-	//defer ch.Close()
 
 }
 
-func (client *rabbitClient) DeclareAndPublishToExchange(exchange string, message string) {
+func (client *rabbitClient) DeclareAndPublishToExchange(exchange string, message string)  error{
 
 	err := client.ch.ExchangeDeclare(
 		exchange, // name
@@ -53,7 +60,10 @@ func (client *rabbitClient) DeclareAndPublishToExchange(exchange string, message
 		nil,      // arguments
 	)
 
-	client.failOnError(err, "Failed to declare an exchange")
+	client.failOnErrorNonFatal(err, "Failed to declare an exchange")
+	if err != nil {
+		return err
+	}
 
 	err = client.ch.Publish(
 		exchange, // exchange
@@ -65,11 +75,12 @@ func (client *rabbitClient) DeclareAndPublishToExchange(exchange string, message
 			Body:        []byte(message),
 		})
 
-	client.failOnError(err, "Failed to publish to the exchange")
+	client.failOnErrorNonFatal(err, "Failed to publish to the exchange")
+	return err
 
 }
 
-func (client *rabbitClient) DeclareQueue(queue string) {
+func (client *rabbitClient) DeclareQueue(queue string) error {
 	// Declare a queue
 	_, err := client.ch.QueueDeclare(
 		queue, // name
@@ -80,32 +91,33 @@ func (client *rabbitClient) DeclareQueue(queue string) {
 		nil,   // arguments
 	)
 
-	client.failOnError(err, "Failed to declare a queue")
+	client.failOnErrorNonFatal(err, "Failed to declare a queue")
+	return err
 }
 
-func (client *rabbitClient) ConsumeFromQueue(queue string) string {
+func (client *rabbitClient) ConsumeFromQueue(queue string) (string, error) {
 
 	msg, _, err := client.ch.Get(queue, true)
 	output := string(msg.Body)
 
-	client.failOnError(err, "Failed to declare a queue")
+	client.failOnErrorNonFatal(err, "Failed to declare a queue")
 
-	return output
+	return output, err
 }
 
-func (client *rabbitClient) DeclareAndConsumeFromQueue(queue string) string {
+func (client *rabbitClient) DeclareAndConsumeFromQueue(queue string) (string,error) {
 
 	// Declare a queue
 	client.DeclareQueue(queue)
 
-	output := client.ConsumeFromQueue(queue)
+	output, err := client.ConsumeFromQueue(queue)
 
-	return output
+	return output,err
 
 }
 
 // Binds a queue to an exchange
-func (client *rabbitClient) BindQueue(exchange string, queue string) {
+func (client *rabbitClient) BindQueue(exchange string, queue string) error {
 	err := client.ch.QueueBind(
 		queue,    // queue name
 		"",       // routing key
@@ -113,6 +125,7 @@ func (client *rabbitClient) BindQueue(exchange string, queue string) {
 		false,
 		nil,
 	)
-	client.failOnError(err, "Failed to bind the queue to the exchange")
+	client.failOnErrorNonFatal(err, "Failed to bind the queue to the exchange")
+	return err
 
 }
