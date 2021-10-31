@@ -32,10 +32,10 @@ These are the env variables to set:
 
 ### Packages
 The software is written taken modularity in mind: There are a set of packages defined
-- main: The main package. Here the service get started and entrypoints are set with gorilla
-- controllers: Here the handler functions are defined to manager requests and responses
-- rabbitmq: Here are defined all functions related to rabbit: declares, create of queues ecc
-- utilities: Some utilities functions
+- **main:** The main package. Here the service get started and entrypoints are set with gorilla
+- **controllers:** Here the handler functions are defined to manager requests and responses
+- **rabbitmq:** Here are defined all functions related to rabbit: declares, create of queues ecc
+- **utilities:** Some utilities functions
 
 ### How to build
 Modules have been used. to build should be necessary to  </br>
