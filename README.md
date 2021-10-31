@@ -16,10 +16,10 @@ message.
 ## Design
 The service has been written in Golang using gorilla as router for the entrypoints. </br>
 It supports two entrypoints: Get operations on /publish and /consume where: </br></br>
-**/publish**: takes in input two parameters, the exchange to publish and the message to publish and the request will look like this </br>
+- **/publish**: takes in input two parameters, the exchange to publish and the message to publish and the request will look like this </br>
 http://localhost:8088/publish?exchange=testrabbitmq&message=test </br>
 It returns http ok in case everything goes fine otherwise an http error message </br></br>
-**/consume**: takes in input the queue to consume. Just one message will be read from the queue if exists and the request will look like this: </br>
+- **/consume**: takes in input the queue to consume. Just one message will be read from the queue if exists and the request will look like this: </br>
 http://localhost:8088/consume?queue=rabbitclient </br>
 It returns the message read encoded as json </br>
 
@@ -39,7 +39,7 @@ The software is written taken modularity in mind: There are a set of packages de
 
 ### How to build
 Modules have been used. to build should be necessary to  </br>
-go build -o service  </br>
+**go build -o service**  </br>
 on the root folder  </br>
 
 ### Unit testing
