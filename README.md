@@ -26,9 +26,9 @@ It returns the message read encoded as json </br>
 ### Input parameter
 The software takes the input parameters as OS environment variables in order to be ready to be deployed on Docker/K8s if necessary.
 These are the env variables to set:
-- export host=localhost 
-- export port=8088 
-- export rabbitURL=amqp://daniele:daniele@localhost:5672/ 
+- **export host=localhost **
+- **export port=8088 **
+- **export rabbitURL=amqp://daniele:daniele@localhost:5672/ **
 
 ### Packages
 The software is written taken modularity in mind: There are a set of packages defined
