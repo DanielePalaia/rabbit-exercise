@@ -58,4 +58,8 @@ Binary can be called after compilation and after having set input OS variables.<
 They can be found in ./bin directory for osx and linux </br>
 A Dockerfile has been provided also in order to deploy it in Docker and eventually on K8s
 
+The Dockerfile can be used to create an image like: </br>
+**docker build -t rabbitmq-exercise .**
+And then you can use docker run -e to specifiy env variables and run the image.</br>
+Maybe also put the image on Dockerhub and deploy the project in k8s</br>
 
