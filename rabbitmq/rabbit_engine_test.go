@@ -18,7 +18,7 @@ func TestHDeclareAndPublishToExchange(t *testing.T) {
 	client.DeclareAndPublishToExchange(exchange, expectedMessage)
 	client.DeclareQueue(queue)
 	client.BindQueue(exchange, queue)
-	msg,_ := client.ConsumeFromQueue(queue)
+	msg, _ := client.ConsumeFromQueue(queue)
 
 	if msg != expectedMessage {
 		t.Errorf("wrong message received: got %v want %v",

@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 	"net/http/httptest"
-	"testing"
 	"rabbit-exercise/rabbitmq"
 	"rabbit-exercise/utilities"
+	"testing"
 )
 
 // Test HandlePublish is working fine

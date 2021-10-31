@@ -48,7 +48,7 @@ func (client *rabbitClient) Connect() {
 
 }
 
-func (client *rabbitClient) DeclareAndPublishToExchange(exchange string, message string)  error{
+func (client *rabbitClient) DeclareAndPublishToExchange(exchange string, message string) error {
 
 	err := client.ch.ExchangeDeclare(
 		exchange, // name
@@ -105,14 +105,14 @@ func (client *rabbitClient) ConsumeFromQueue(queue string) (string, error) {
 	return output, err
 }
 
-func (client *rabbitClient) DeclareAndConsumeFromQueue(queue string) (string,error) {
+func (client *rabbitClient) DeclareAndConsumeFromQueue(queue string) (string, error) {
 
 	// Declare a queue
 	client.DeclareQueue(queue)
 
 	output, err := client.ConsumeFromQueue(queue)
 
-	return output,err
+	return output, err
 
 }
 

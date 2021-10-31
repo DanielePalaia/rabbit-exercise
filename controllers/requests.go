@@ -52,7 +52,7 @@ func HandleConsume(w http.ResponseWriter, r *http.Request) {
 	}
 	queue := queues[0]
 
-	msg,err := rabbitmq.Client.DeclareAndConsumeFromQueue(queue)
+	msg, err := rabbitmq.Client.DeclareAndConsumeFromQueue(queue)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
