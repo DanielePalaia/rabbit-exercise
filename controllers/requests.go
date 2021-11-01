@@ -71,11 +71,11 @@ func HandleConsume(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 
-	EncodeToJsonWithBody(w, msg)
+	encodeToJsonWithBody(w, msg)
 
 }
 
-func EncodeToJsonWithBody(w http.ResponseWriter, response interface{}) error {
+func encodeToJsonWithBody(w http.ResponseWriter, response interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	js, err := json.Marshal(response)
