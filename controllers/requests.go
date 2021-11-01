@@ -31,6 +31,7 @@ func HandlePublish(w http.ResponseWriter, r *http.Request) {
 
 	rabbitmqClient := rabbitmq.MakeRabbitClient(rabbitmq.Server)
 	err := rabbitmqClient.CreateChannel()
+	defer rabbitmqClient.CloseChannel()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
@@ -60,6 +61,7 @@ func HandleConsume(w http.ResponseWriter, r *http.Request) {
 	rabbitmqClient := rabbitmq.MakeRabbitClient(rabbitmq.Server)
 
 	err := rabbitmqClient.CreateChannel()
+	defer rabbitmqClient.CloseChannel()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}

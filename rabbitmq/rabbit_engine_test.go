@@ -18,6 +18,7 @@ func TestHDeclareAndPublishToExchange(t *testing.T) {
 
 	client := MakeRabbitClient(server)
 	client.CreateChannel()
+	defer client.CloseChannel()
 
 	client.DeclareAndPublishToExchange(exchange, expectedMessage)
 	client.DeclareQueue(queue)

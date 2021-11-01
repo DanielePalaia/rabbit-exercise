@@ -11,6 +11,7 @@ type RabbitServer struct {
 	conn       *amqp.Connection
 }
 
+// Global variable how basically holds the rabbitmq connection
 var (
 	Server *RabbitServer
 )

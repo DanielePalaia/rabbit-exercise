@@ -89,7 +89,7 @@ func (client *rabbitClient) ConsumeFromQueue(queue string) (string, error) {
 	msg, _, err := client.ch.Get(queue, true)
 	output := string(msg.Body)
 
-	client.failOnErrorNonFatal(err, "Failed to declare a queue")
+	client.failOnErrorNonFatal(err, "Failed to get items from the queue")
 
 	return output, err
 }
@@ -120,15 +120,9 @@ func (client *rabbitClient) BindQueue(exchange string, queue string) error {
 }
 
 // Binds a queue to an exchange
-func (client *rabbitClient) CloseChannel(exchange string, queue string) error {
-	err := client.ch.QueueBind(
-		queue,    // queue name
-		"",       // routing key
-		exchange, // exchange
-		false,
-		nil,
-	)
-	client.failOnErrorNonFatal(err, "Failed to bind the queue to the exchange")
+func (client *rabbitClient) CloseChannel() error {
+	err := client.ch.Close()
+	client.failOnErrorNonFatal(err, "Failed to close a channel")
 	return err
 
 }

@@ -75,6 +75,7 @@ func initialize() {
 	rabbitmq.Server.Connect()
 	client := rabbitmq.MakeRabbitClient(rabbitmq.Server)
 	client.CreateChannel()
+	defer client.CloseChannel()
 	client.DeclareAndPublishToExchange("TestHandlePublishOK", "hello")
 	client.DeclareQueue("TestHandleConsumeOK")
 	client.BindQueue("TestHandlePublishOK", "TestHandleConsumeOK")
