@@ -66,3 +66,6 @@ The Dockerfile can be used to create an image like: </br>
 And then you can use docker run -e to specifiy env variables and run the image.</br>
 Maybe also put the image on Dockerhub and deploy the project in k8s</br>
 
+### Static code analysis
+golint has been run to detect errors, not relevant error were found on the project.
+
