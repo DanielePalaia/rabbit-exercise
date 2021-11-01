@@ -50,11 +50,13 @@ To run tests is necessary to have a rabbitmq started locally (ex using docker)
 
 ```
 dpalaia@dpalaia-a02 vmw-rabbit-exercise % go test ./...
-?       vmw-vdp [no test files]
-ok      vmw-vdp/controllers     0.740s
-?       vmw-vdp/rabbitmq        [no test files]
-ok      vmw-vdp/utilities       (cached)
+dpalaia@dpalaia-a02 rabbit-exercise % go test ./...
+?       rabbit-exercise [no test files]
+ok      rabbit-exercise/controllers     0.961s
+ok      rabbit-exercise/rabbitmq        0.841s
+ok      rabbit-exercise/utilities       (cached)
 ```
+
 ### Deployment
 Binary can be called after compilation and after having set input OS variables.</br>
 They can be found in ./bin directory for osx and linux </br>
