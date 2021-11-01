@@ -21,7 +21,9 @@ http://localhost:8088/publish?exchange=testrabbitmq&message=test </br>
 It returns http ok in case everything goes fine otherwise an http error message </br></br>
 - **/consume**: takes in input the queue to consume. Just one message will be read from the queue if exists and the request will look like this: </br>
 http://localhost:8088/consume?queue=rabbitclient </br>
-It returns the message read encoded as json </br>
+It returns the message read encoded as json </br></br>
+The software creates a rabbitmq connection when the service starts and channels for every requests to manage the single request as suggest by the documentation</br>
+
 
 ### Input parameter
 The software takes the input parameters as OS environment variables in order to be ready to be deployed on Docker/K8s if necessary.
