@@ -12,8 +12,9 @@ func main() {
 
 	host, port := utilities.GetHostAndPort()
 	rabbitURL := utilities.GetRabbitInfo()
-	rabbitmq.Client = rabbitmq.MakeRabbitClient(rabbitURL)
-	rabbitmq.Client.Connect()
+	// Create a connection to rabbit (one for the entire life of the server)
+	rabbitmq.Server = rabbitmq.MakeRabbitServer(rabbitURL)
+	rabbitmq.Server.Connect()
 	createServer(host, port)
 
 }

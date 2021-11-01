@@ -1,4 +1,4 @@
-// Package controllers contains the main get hanlde function of the project to handle /service
+// Package controllers contains the main get hanlde function of the project to handle /publish and /consume
 package controllers
 
 import (
@@ -8,7 +8,7 @@ import (
 	"rabbit-exercise/rabbitmq"
 )
 
-// HandleServiceRequest Receives and manage the request (city and numbers of info)
+// HandlePublish Receives and manage publish request 
 func HandlePublish(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("HandlePublish: Receiving a /publish request: ")
@@ -29,7 +29,12 @@ func HandlePublish(w http.ResponseWriter, r *http.Request) {
 	}
 	message := messages[0]
 
-	err := rabbitmq.Client.DeclareAndPublishToExchange(exchange, message)
+	rabbitmqClient := rabbitmq.MakeRabbitClient(rabbitmq.Server)
+	err := rabbitmqClient.CreateChannel()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	err = rabbitmqClient.DeclareAndPublishToExchange(exchange, message)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
@@ -39,7 +44,7 @@ func HandlePublish(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// HandleServiceRequest Receives and manage the request (city and numbers of info)
+// HandleConsume Receives and manage consume request 
 func HandleConsume(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("HandleConsume: Receiving a /consume request: ")
@@ -52,9 +57,15 @@ func HandleConsume(w http.ResponseWriter, r *http.Request) {
 	}
 	queue := queues[0]
 
-	msg, err := rabbitmq.Client.DeclareAndConsumeFromQueue(queue)
+	rabbitmqClient := rabbitmq.MakeRabbitClient(rabbitmq.Server)
 
+	err := rabbitmqClient.CreateChannel()
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	msg, err2 := rabbitmqClient.DeclareAndConsumeFromQueue(queue)
+
+	if err2 != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 

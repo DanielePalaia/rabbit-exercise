@@ -1,3 +1,4 @@
+// test for rabbitmq operations
 package rabbitmq
 
 import (
@@ -13,7 +14,10 @@ func TestHDeclareAndPublishToExchange(t *testing.T) {
 	queue := "queueTestHDeclareAndPublishToExchange"
 	expectedMessage := "message1"
 
-	client := initialize()
+	server := initialize()
+
+	client := MakeRabbitClient(server)
+	client.CreateChannel()
 
 	client.DeclareAndPublishToExchange(exchange, expectedMessage)
 	client.DeclareQueue(queue)
@@ -28,12 +32,12 @@ func TestHDeclareAndPublishToExchange(t *testing.T) {
 }
 
 // Setting up rabbitmq cluster, exchange and queue
-func initialize() *rabbitClient {
+func initialize() *RabbitServer {
 
 	rabbitURL := utilities.GetRabbitInfo()
-	client := MakeRabbitClient(rabbitURL)
-	client.Connect()
+	server := MakeRabbitServer(rabbitURL)
+	server.Connect()
 
-	return client
+	return server
 
 }

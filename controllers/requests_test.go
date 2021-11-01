@@ -71,11 +71,13 @@ func TestHandleConsumeOK(t *testing.T) {
 func initialize() {
 
 	rabbitURL := utilities.GetRabbitInfo()
-	rabbitmq.Client = rabbitmq.MakeRabbitClient(rabbitURL)
-	rabbitmq.Client.Connect()
-	rabbitmq.Client.DeclareAndPublishToExchange("TestHandlePublishOK", "hello")
-	rabbitmq.Client.DeclareQueue("TestHandleConsumeOK")
-	rabbitmq.Client.BindQueue("TestHandlePublishOK", "TestHandleConsumeOK")
+	rabbitmq.Server = rabbitmq.MakeRabbitServer(rabbitURL)
+	rabbitmq.Server.Connect()
+	client := rabbitmq.MakeRabbitClient(rabbitmq.Server)
+	client.CreateChannel()
+	client.DeclareAndPublishToExchange("TestHandlePublishOK", "hello")
+	client.DeclareQueue("TestHandleConsumeOK")
+	client.BindQueue("TestHandlePublishOK", "TestHandleConsumeOK")
 }
 
 // Mock a get request
