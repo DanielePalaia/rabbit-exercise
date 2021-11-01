@@ -8,7 +8,7 @@ import (
 	"rabbit-exercise/rabbitmq"
 )
 
-// HandlePublish Receives and manage publish request 
+// HandlePublish Receives and manage publish request
 func HandlePublish(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("HandlePublish: Receiving a /publish request: ")
@@ -45,7 +45,7 @@ func HandlePublish(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// HandleConsume Receives and manage consume request 
+// HandleConsume Receives and manage consume request
 func HandleConsume(w http.ResponseWriter, r *http.Request) {
 
 	log.Print("HandleConsume: Receiving a /consume request: ")
